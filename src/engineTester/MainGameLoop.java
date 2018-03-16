@@ -1,5 +1,7 @@
 package engineTester;
 
+import animation.Humanoid;
+import animation.KeyFrames;
 import models.RawModel;
 import models.TexturedModel;
 
@@ -102,20 +104,14 @@ public class MainGameLoop {
 
 		};
 		
-		RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
-		
-		TexturedModel headModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("doraemon_face")));
-		TexturedModel bodyModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("body")));
-		TexturedModel armModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("hand")));
-		TexturedModel legModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("leg")));
+		Humanoid figure = new Humanoid(loader);
 
-//		Entity head = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
-		Entity head = new Entity(1,headModel, new Vector3f(0,0,0),0,0,0,1, 1,1);
-		Entity body = new Entity(0,bodyModel, new Vector3f(0,-2.5f,0),0,0,0,2, 4, 1);
-		Entity leftarm = new Entity(2,armModel, new Vector3f(-1.25f,-1.5f,0),0,0,90,0.5f,2,1);
-		Entity rightarm = new Entity(3,armModel, new Vector3f(1.25f,-1.5f,0),0,0,-90,0.5f,2,1);
-		Entity leftleg = new Entity(4,legModel, new Vector3f(-0.5f,-5.5f,0),0,0,0,0.5f,2,1);
-		Entity rightleg = new Entity(5,legModel, new Vector3f(0.5f,-5.5f,0),0,0,0,0.5f,2,1);
+		Entity head = figure.bodyParts[0];
+		Entity body = figure.bodyParts[1];
+		Entity leftarm = figure.bodyParts[2];
+		Entity rightarm = figure.bodyParts[3];
+		Entity leftleg = figure.bodyParts[4];
+		Entity rightleg = figure.bodyParts[5];
 
 		body.children.add(head.jointIndex);
 		body.children.add(leftarm.jointIndex);

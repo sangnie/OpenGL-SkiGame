@@ -42,11 +42,12 @@ public class Renderer {
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
-				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScaleX(), entity.getScaleY(),entity.getScaleZ());
+//		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
+//				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScaleX(), entity.getScaleY(),entity.getScaleZ());
 //		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
 //				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
-		shader.loadTransformationMatrix(transformationMatrix);
+//		shader.loadTransformationMatrix(transformationMatrix);
+		shader.loadTransformationMatrix(entity.bindTransform);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 		GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
