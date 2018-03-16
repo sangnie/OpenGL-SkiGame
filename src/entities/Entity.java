@@ -1,5 +1,8 @@
 package entities;
 
+import animation.LocalTransform;
+import com.sun.tools.javac.Main;
+import engineTester.MainGameLoop;
 import models.TexturedModel;
 
 import org.lwjgl.Sys;
@@ -23,7 +26,8 @@ public class Entity {
 //	public static ArrayList<Matrix4f> finalRenderTransforms = new ArrayList<Matrix4f>();
 //	public static ArrayList<Matrix4f> withoutScaleTransform = new ArrayList<Matrix4f>();
 //	public static ArrayList<Matrix4f> scaleTransforms;
-	public static Matrix4f[] finalRenderTransforms = new Matrix4f[6];
+//	public static Matrix4f[] finalRenderTransforms = new Matrix4f[6];
+    public Matrix4f finalRenderTransform;
 	public static Matrix4f[] withoutScaleTransforms = new Matrix4f[6];
 	public static Matrix4f[] scaleTransforms = new Matrix4f[6];
 	public static ArrayList<LocalTransform> translationsRotations;
@@ -55,13 +59,15 @@ public class Entity {
 
 	public static void generateTransforms(Matrix4f parentTransform, int index) {
 		Matrix4f localTransform = new Matrix4f();
-		localTransform.translate(translationsRotations.get(index).translation);
-		Matrix4f.mul(localTransform, translationsRotations.get(index).rotation.toRotationMatrix(), localTransform);
+        localTransform.translate(translationsRotations.get(index).translation);
+        Matrix4f.mul(localTransform, translationsRotations.get(index).rotation.toRotationMatrix(), localTransform);
 		Matrix4f globalTransform = Matrix4f.mul(parentTransform,localTransform,null);
 		withoutScaleTransforms[index] = globalTransform;
 		Matrix4f finalTransform = Matrix4f.mul(globalTransform,scaleTransforms[index],null);
-		finalRenderTransforms[index] = finalTransform;
-		for(int child:children) {
+//		finalRenderTransforms[index] = finalTransform;
+        MainGameLoop.entities.get(index).finalRenderTransform = finalTransform;
+		for(int child: MainGameLoop.entities.get(index).children) {
+//		    System.out.println(index + " : " + child);
 			generateTransforms(globalTransform,child);
 		}
 	}

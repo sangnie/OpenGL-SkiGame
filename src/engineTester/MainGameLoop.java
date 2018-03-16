@@ -25,6 +25,7 @@ public class MainGameLoop {
 
 	public static int current_pose;
 	public static int num_objects;
+    public static ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	public static void main(String[] args) {
 
@@ -119,7 +120,7 @@ public class MainGameLoop {
 //		TexturedModel armModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("hand")));
 //		TexturedModel legModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("leg")));
 //
-		ArrayList<Entity> entities = new ArrayList<Entity>();
+
 //
 ////		Entity head = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
 //		Entity head = new Entity(1,headModel, new Vector3f(0,0,0),0,0,0,1, 1,1);
@@ -179,6 +180,7 @@ public class MainGameLoop {
 		shader.start();
 		while(!Display.isCloseRequested()){
 //			entity.increaseRotation(0, 1, 0);
+            rootTransform.translate(new Vector3f(0.002f,0.0f,0.0f));
 			camera.move();
 			renderer.prepare();
 			shader.loadViewMatrix(camera);
@@ -187,7 +189,7 @@ public class MainGameLoop {
 //			Entity.updateTransforms(keyframes.poses[current_pose],entities,0);
 			Entity.translationsRotations = keyframes.poses[current_pose];
 			Entity.generateTransforms(rootTransform,0);
-			Entity.setBindTransform(keyframes.poses[current_pose],entities);
+//			Entity.setBindTransform(keyframes.poses[current_pose],entities);
 			for(Entity ent:entities) {
 				renderer.render(ent,shader);
 			}
