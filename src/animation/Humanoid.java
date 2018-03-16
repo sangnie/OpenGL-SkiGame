@@ -106,11 +106,11 @@ public class Humanoid{
         TexturedModel legModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("leg")));
 
         //		Entity head = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
-        bodyParts[0] = new Entity(1, headModel, new Vector3f(0, 0, 0), 0, 0, 0, 1, 1, 1);
-        bodyParts[1] = new Entity(0, bodyModel, new Vector3f(0, -2.5f, 0), 0, 0, 0, 2, 4, 1);
-        bodyParts[2] = new Entity(2, armModel, new Vector3f(-1.25f, -1.5f, 0), 0, 0, 0, 0.5f, 2, 1);
-        bodyParts[3] = new Entity(3, armModel, new Vector3f(1.25f, -1.5f, 0), 0, 0, 0, 0.5f, 2, 1);
-        bodyParts[4] = new Entity(4, legModel, new Vector3f(-0.5f, -5.5f, 0), 0, 0, 0, 0.5f, 2, 1);
-        bodyParts[5] = new Entity(5, legModel, new Vector3f(0.5f, -5.5f, 0), 0, 0, 0, 0.5f, 2, 1);
+        bodyParts[0] = new Entity(0, bodyModel, new Vector3f(0, 0f, 0), 0, 0, 0, 2, 4, 1);
+        bodyParts[1] = new Entity(1, headModel, new Vector3f(0, 2.5f, 0), 0, 0, 0, 1, 1, 1);
+        bodyParts[2] = new Entity(2, armModel, new Vector3f(-1.25f, 0f, 0), 0, 0, 0, 0.5f, 2, 1);
+        bodyParts[3] = new Entity(3, armModel, new Vector3f(1.25f, 0f, 0), 0, 0, 0, 0.5f, 2, 1);
+        bodyParts[4] = new Entity(4, legModel, new Vector3f(-0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 1);
+        bodyParts[5] = new Entity(5, legModel, new Vector3f(0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 1);
     }
 }

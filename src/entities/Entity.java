@@ -2,6 +2,7 @@ package entities;
 
 import models.TexturedModel;
 
+import org.lwjgl.Sys;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import toolbox.Maths;
@@ -21,7 +22,7 @@ public class Entity {
 //	private float scale;
 
 	public Entity(int jointIndex, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
-			float scaleX, float scaleY, float scaleZ) {
+				  float scaleX, float scaleY, float scaleZ) {
 //			float scale) {
 		this.model = model;
 		this.position = position;
@@ -38,12 +39,20 @@ public class Entity {
 	}
 
 	// Update all localBindtransforms according to current pose
-	public static void updateBindTransform(ArrayList<Matrix4f> updatedTransforms) {
-	    for(Matrix4f transform:updatedTransforms) {
-
-        }
+	public static void updateTransforms(ArrayList<Matrix4f> updatedTransforms, ArrayList<Entity> entities, int index) {
+		entities.get(index).bindTransform = Matrix4f.mul(updatedTransforms.get(index),entities.get(index).bindTransform,null);
+		for(int child:entities.get(index).children) {
+			updateTransforms(updatedTransforms,entities,child);
+		}
 	}
 
+	public static void setBindTransform(ArrayList<Matrix4f> updatedTransforms, ArrayList<Entity> entities) {
+//		System.out.println(entities.size());
+//		System.out.println(updatedTransforms.size());
+		for(int i = 0 ; i < entities.size() ; i++) {
+			entities.get(i).bindTransform = updatedTransforms.get(i);
+		}
+	}
 
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
