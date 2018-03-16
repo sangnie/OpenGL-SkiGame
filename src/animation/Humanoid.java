@@ -3,6 +3,7 @@ package animation;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
 import textures.ModelTexture;
@@ -96,6 +97,8 @@ public class Humanoid{
 
     };
 
+    public Matrix4f[] scales = new Matrix4f[6];
+
     public Humanoid(Loader loader){
 
         RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
@@ -112,5 +115,12 @@ public class Humanoid{
         bodyParts[3] = new Entity(3, armModel, new Vector3f(1.25f, 0f, 0), 0, 0, 0, 0.5f, 2, 1);
         bodyParts[4] = new Entity(4, legModel, new Vector3f(-0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 1);
         bodyParts[5] = new Entity(5, legModel, new Vector3f(0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 1);
+
+        scales[0] = Matrix4f.scale(new Vector3f(2,4,1), new Matrix4f(), null);
+        scales[1] = Matrix4f.scale(new Vector3f(1,1,1), new Matrix4f(), null);
+        scales[2] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
+        scales[3] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
+        scales[4] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
+        scales[5] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
     }
 }
