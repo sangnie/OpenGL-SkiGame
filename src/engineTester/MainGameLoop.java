@@ -7,6 +7,7 @@ import models.TexturedModel;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import renderEngine.DisplayManager;
@@ -19,9 +20,11 @@ import entities.Entity;
 
 import java.util.ArrayList;
 
+
 public class MainGameLoop {
 
 	public static int current_pose;
+	public static int num_objects;
 
 	public static void main(String[] args) {
 
@@ -129,6 +132,7 @@ public class MainGameLoop {
 		Humanoid figure = new Humanoid(loader);
 		KeyFrames keyframes = new KeyFrames(figure);
 
+//		int num_objects = 6;
 		Entity body = figure.bodyParts[0];
 		Entity head = figure.bodyParts[1];
 		Entity leftarm = figure.bodyParts[2];
@@ -157,9 +161,20 @@ public class MainGameLoop {
 		entities.add(leftleg);
 		entities.add(rightleg);
 
+		num_objects = entities.size();
+
+//		for(int i = 0 ; i < num_objects ; i++) {
+//			Entity.finalRenderTransforms.add(new Matrix4f());
+//			Entity.withoutScaleTransform.add(new Matrix4f());
+//		}
+
+
+		Entity.scaleTransforms = figure.scales;
+
 		Camera camera = new Camera();
 
 		current_pose = 0;
+		Matrix4f rootTransform = new Matrix4f();
 
 		shader.start();
 		while(!Display.isCloseRequested()){
@@ -170,6 +185,8 @@ public class MainGameLoop {
 			detect_pose();
 			// updated transform from pose
 //			Entity.updateTransforms(keyframes.poses[current_pose],entities,0);
+			Entity.translationsRotations = keyframes.poses[current_pose];
+			Entity.generateTransforms(rootTransform,0);
 			Entity.setBindTransform(keyframes.poses[current_pose],entities);
 			for(Entity ent:entities) {
 				renderer.render(ent,shader);

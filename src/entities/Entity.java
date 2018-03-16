@@ -20,6 +20,13 @@ public class Entity {
 	public ArrayList<Integer> children = new ArrayList<Integer>();
 	public int parentID;
 //	private float scale;
+//	public static ArrayList<Matrix4f> finalRenderTransforms = new ArrayList<Matrix4f>();
+//	public static ArrayList<Matrix4f> withoutScaleTransform = new ArrayList<Matrix4f>();
+//	public static ArrayList<Matrix4f> scaleTransforms;
+	public static Matrix4f[] finalRenderTransforms = new Matrix4f[6];
+	public static Matrix4f[] withoutScaleTransforms = new Matrix4f[6];
+	public static Matrix4f[] scaleTransforms = new Matrix4f[6];
+	public static ArrayList<LocalTransform> translationsRotations;
 
 	public Entity(int jointIndex, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
 				  float scaleX, float scaleY, float scaleZ) {
@@ -39,10 +46,23 @@ public class Entity {
 	}
 
 	// Update all localBindtransforms according to current pose
-	public static void updateTransforms(ArrayList<Matrix4f> updatedTransforms, ArrayList<Entity> entities, int index) {
-		entities.get(index).bindTransform = Matrix4f.mul(updatedTransforms.get(index),entities.get(index).bindTransform,null);
-		for(int child:entities.get(index).children) {
-			updateTransforms(updatedTransforms,entities,child);
+//	public static void updateTransforms(ArrayList<Matrix4f> updatedTransforms, ArrayList<Entity> entities, int index) {
+//		entities.get(index).bindTransform = Matrix4f.mul(updatedTransforms.get(index),entities.get(index).bindTransform,null);
+//		for(int child:entities.get(index).children) {
+//			updateTransforms(updatedTransforms,entities,child);
+//		}
+//	}
+
+	public static void generateTransforms(Matrix4f parentTransform, int index) {
+		Matrix4f localTransform = new Matrix4f();
+		localTransform.translate(translationsRotations.get(index).translation);
+		Matrix4f.mul(localTransform, translationsRotations.get(index).rotation.toRotationMatrix(), localTransform);
+		Matrix4f globalTransform = Matrix4f.mul(parentTransform,localTransform,null);
+		withoutScaleTransforms[index] = globalTransform;
+		Matrix4f finalTransform = Matrix4f.mul(globalTransform,scaleTransforms[index],null);
+		finalRenderTransforms[index] = finalTransform;
+		for(int child:children) {
+			generateTransforms(globalTransform,child);
 		}
 	}
 
