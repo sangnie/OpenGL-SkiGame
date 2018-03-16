@@ -87,4 +87,19 @@ public class KeyFrames {
         poses[2].add(new LocalTransform(new Vector3f(0.5f,-2.5f,0),45,new Vector3f(1,0,0)));
 
     }
+
+    public ArrayList<LocalTransform> interpolate(int prev, int next, float t){
+
+        ArrayList<LocalTransform> pose = new ArrayList<LocalTransform>(6);
+        ArrayList<LocalTransform> prevPose = poses[prev];
+        ArrayList<LocalTransform> nextPose = poses[next];
+        for(int i = 0 ; i < nextPose.size() ; i++) {
+            float x = prevPose.get(i).translation.x + (nextPose.get(i).translation.x - prevPose.get(i).translation.x) * t;
+            float y = prevPose.get(i).translation.y + (nextPose.get(i).translation.y - prevPose.get(i).translation.y) * t;
+            float z = prevPose.get(i).translation.z + (nextPose.get(i).translation.z - prevPose.get(i).translation.z) * t;
+            Quaternion rot = Quaternion.interpolate(prevPose.get(i).rotation, nextPose.get(i).rotation, t);
+            pose.add(new LocalTransform(new Vector3f(x,y,z), rot));
+        }
+        return pose;
+    }
 }

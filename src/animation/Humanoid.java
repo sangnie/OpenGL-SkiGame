@@ -116,11 +116,11 @@ public class Humanoid{
         bodyParts[4] = new Entity(4, legModel, new Vector3f(-0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
         bodyParts[5] = new Entity(5, legModel, new Vector3f(0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
 
-        scales[0] = Matrix4f.scale(new Vector3f(2,4,1), new Matrix4f(), null);
-        scales[1] = Matrix4f.scale(new Vector3f(1,1,1), new Matrix4f(), null);
-        scales[2] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
-        scales[3] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
-        scales[4] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
-        scales[5] = Matrix4f.scale(new Vector3f(0.5f,2,1), new Matrix4f(), null);
+        scales[0] = Matrix4f.scale(new Vector3f(2,4,0.5f), new Matrix4f(), null);
+        scales[1] = Matrix4f.scale(new Vector3f(1,1,0.5f), new Matrix4f(), null);
+        scales[2] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[3] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[4] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[5] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
     }
 }

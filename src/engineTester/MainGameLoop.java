@@ -174,20 +174,39 @@ public class MainGameLoop {
 
 		Camera camera = new Camera();
 
+		int previous_pose = 0;
 		current_pose = 0;
 		Matrix4f rootTransform = new Matrix4f();
+        int cycles = 100;
+		int cyclesDone = 0;
+        boolean polating = false;
 
 		shader.start();
 		while(!Display.isCloseRequested()){
 //			entity.increaseRotation(0, 1, 0);
-            rootTransform.translate(new Vector3f(0.002f,0.0f,0.0f));
+//            rootTransform.translate(new Vector3f(0.002f,0.0f,0.0f));
 			camera.move();
 			renderer.prepare();
 			shader.loadViewMatrix(camera);
-			detect_pose();
-			// updated transform from pose
+			if(!polating) {
+                detect_pose();
+                if(current_pose != previous_pose) {
+                    polating = true;
+                    cyclesDone = 0;
+                }
+                Entity.translationsRotations = keyframes.poses[previous_pose];
+            }
+            else {
+//                Entity.translationsRotations = interpolate(keyframes.poses[previous_pose],keyframes.poses[current_pose],1.0*cyclesDone/cycles);
+                Entity.translationsRotations = keyframes.interpolate(previous_pose,current_pose,1.0f*cyclesDone/cycles);
+                if(++cyclesDone == 100){
+                    previous_pose = current_pose;
+                    polating = false;
+                }
+
+            }
+            // updated transform from pose
 //			Entity.updateTransforms(keyframes.poses[current_pose],entities,0);
-			Entity.translationsRotations = keyframes.poses[current_pose];
 			Entity.generateTransforms(rootTransform,0);
 //			Entity.setBindTransform(keyframes.poses[current_pose],entities);
 			for(Entity ent:entities) {
