@@ -2,6 +2,7 @@ package engineTester;
 
 import animation.Humanoid;
 import animation.KeyFrames;
+import entities.Light;
 import models.RawModel;
 import models.TexturedModel;
 
@@ -12,11 +13,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
-import renderEngine.Renderer;
+import renderEngine.MasterRenderer;
+//import renderEngine.Renderer;
 import shaders.StaticShader;
+import terrains.Terrain;
 import textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
+import toolbox.Maths;
 
 import java.util.ArrayList;
 
@@ -31,87 +35,9 @@ public class MainGameLoop {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		StaticShader shader = new StaticShader();
-		Renderer renderer = new Renderer(shader);
-
-		float[] vertices = {
-				-0.5f,0.5f,0,
-				-0.5f,-0.5f,0,
-				0.5f,-0.5f,0,
-				0.5f,0.5f,0,
-
-				-0.5f,0.5f,1,
-				-0.5f,-0.5f,1,
-				0.5f,-0.5f,1,
-				0.5f,0.5f,1,
-
-				0.5f,0.5f,0,
-				0.5f,-0.5f,0,
-				0.5f,-0.5f,1,
-				0.5f,0.5f,1,
-
-				-0.5f,0.5f,0,
-				-0.5f,-0.5f,0,
-				-0.5f,-0.5f,1,
-				-0.5f,0.5f,1,
-
-				-0.5f,0.5f,1,
-				-0.5f,0.5f,0,
-				0.5f,0.5f,0,
-				0.5f,0.5f,1,
-
-				-0.5f,-0.5f,1,
-				-0.5f,-0.5f,0,
-				0.5f,-0.5f,0,
-				0.5f,-0.5f,1
-
-		};
-
-		float[] textureCoords = {
-
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0
-
-
-		};
-
-		int[] indices = {
-				0,1,3,
-				3,1,2,
-				4,5,7,
-				7,5,6,
-				8,9,11,
-				11,9,10,
-				12,13,15,
-				15,13,14,
-				16,17,19,
-				19,17,18,
-				20,21,23,
-				23,21,22
-
-		};
+//		StaticShader shader = new StaticShader();
+//		Renderer renderer = new Renderer(shader);
+		MasterRenderer renderer = new MasterRenderer();
 
 //		RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
 //
@@ -169,6 +95,9 @@ public class MainGameLoop {
 //			Entity.withoutScaleTransform.add(new Matrix4f());
 //		}
 
+		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+
 
 		Entity.scaleTransforms = figure.scales;
 
@@ -177,17 +106,19 @@ public class MainGameLoop {
 		int previous_pose = 0;
 		current_pose = 0;
 		Matrix4f rootTransform = new Matrix4f();
+		rootTransform.translate(new Vector3f(0,5,0));
         int cycles = 100;
 		int cyclesDone = 0;
         boolean polating = false;
 
-		shader.start();
+//		shader.start();
 		while(!Display.isCloseRequested()){
 //			entity.increaseRotation(0, 1, 0);
-//            rootTransform.translate(new Vector3f(0.002f,0.0f,0.0f));
+            rootTransform.translate(new Vector3f(0.005f,0.0f,0.0f));
+            rootTransform.rotate((float)Math.toRadians(0.4f),new Vector3f(0,1,0));
 			camera.move();
-			renderer.prepare();
-			shader.loadViewMatrix(camera);
+//			renderer.prepare();
+//			shader.loadViewMatrix(camera);
 			if(!polating) {
                 detect_pose();
                 if(current_pose != previous_pose) {
@@ -207,11 +138,20 @@ public class MainGameLoop {
             }
             // updated transform from pose
 //			Entity.updateTransforms(keyframes.poses[current_pose],entities,0);
+
 			Entity.generateTransforms(rootTransform,0);
+
 //			Entity.setBindTransform(keyframes.poses[current_pose],entities);
+
 			for(Entity ent:entities) {
-				renderer.render(ent,shader);
+//				renderer.render(ent,shader);
+				renderer.processEntity(ent);
 			}
+
+			renderer.processTerrain(terrain);
+
+			renderer.render(light,camera);
+
 //			renderer.render(head,shader);
 //			renderer.render(body,shader);
 //			renderer.render(leftarm,shader);
@@ -222,7 +162,8 @@ public class MainGameLoop {
 			DisplayManager.updateDisplay();
 		}
 
-		shader.cleanUp();
+//		shader.cleanUp();
+		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 
@@ -244,3 +185,5 @@ public class MainGameLoop {
 	}
 
 }
+
+// config :  -Djava.library.path=lib/
