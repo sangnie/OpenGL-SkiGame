@@ -101,7 +101,7 @@ public class MainGameLoop {
 
 		Entity.scaleTransforms = figure.scales;
 
-		Camera camera = new Camera();
+		Camera camera = new Camera(figure);
 
 		int previous_pose = 0;
 		current_pose = 0;

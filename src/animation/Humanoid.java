@@ -20,9 +20,15 @@ public class Humanoid{
 
     public float RUN_SPEED = 10;
     public float TURN_SPEED = 120;
+    public float GRAVITY = -50;
+    public float JUMP_POWER = 30;
+    public float TERRAIN_HEIGHT = 5;        ////////////// ADD HEIGHT OF CENTRE OF THE MODEL.
 
     public float currentSpeed = 0;
     public float currentTurnSpeed = 0;
+    public float upSpeed = 0;
+
+    public boolean isInAir = false;
 
     public float pos_x, pos_y, pos_z;
     public float rot_x, rot_y, rot_z;
@@ -50,6 +56,14 @@ public class Humanoid{
         float dx = (float) (distance * Math.sin(Math.toRadians(rot_y)));
         float dz = (float) (distance * Math.cos(Math.toRadians(rot_y)));
         increasePosition( dx, 0 ,  dz);
+        upSpeed += GRAVITY * DisplayManager.getFrameTime();
+        increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
+        if(pos_y < TERRAIN_HEIGHT)
+        {
+            upSpeed = 0;
+            isInAir = false;
+            pos_y = TERRAIN_HEIGHT;
+        }
     }
 
     public void checkInputs(){
@@ -71,6 +85,14 @@ public class Humanoid{
         }
         else {
             this.currentTurnSpeed = 0;
+        }
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            if(! isInAir)
+            {
+                this.upSpeed = JUMP_POWER;
+                isInAir = true;
+            }
         }
     }
 
@@ -160,7 +182,7 @@ public class Humanoid{
     public Humanoid(Loader loader){
 
         pos_x = 0;
-        pos_y = 0;
+        pos_y = 5;
         pos_z = 0;
         rot_x = 0;
         rot_y = 0;
