@@ -13,18 +13,18 @@ public class Camera {
 	public Camera(){}
 	
 	public void move(){
-		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-			position.z-=0.02f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-			position.z+=0.02f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-			position.x+=0.02f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-			position.x-=0.02f;
-		}
+//		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+//			position.z-=0.02f;
+//		}
+//		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+//			position.z+=0.02f;
+//		}
+//		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+//			position.x+=0.02f;
+//		}
+//		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+//			position.x-=0.02f;
+//		}
 	}
 
 	public Vector3f getPosition() {

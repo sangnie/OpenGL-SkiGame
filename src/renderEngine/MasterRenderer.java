@@ -83,8 +83,8 @@ public class MasterRenderer {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glClearColor(0.49f, 89f, 0.98f, 1);
 //        GL11.glClearColor(0f, 0.3f, 0f, 1);
-        Random random = new Random();
-        GL11.glClearColor(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
+//        Random random = new Random();
+//        GL11.glClearColor(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
     }
 
     private void createProjectionMatrix() {

@@ -96,7 +96,7 @@ public class MainGameLoop {
 //		}
 
 		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
-		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")));
 
 
 		Entity.scaleTransforms = figure.scales;
@@ -105,8 +105,8 @@ public class MainGameLoop {
 
 		int previous_pose = 0;
 		current_pose = 0;
-		Matrix4f rootTransform = new Matrix4f();
-		rootTransform.translate(new Vector3f(0,5,0));
+//		Matrix4f rootTransform = new Matrix4f();
+//		rootTransform.translate(new Vector3f(0,5,0));
         int cycles = 100;
 		int cyclesDone = 0;
         boolean polating = false;
@@ -114,10 +114,21 @@ public class MainGameLoop {
 //		shader.start();
 		while(!Display.isCloseRequested()){
 //			entity.increaseRotation(0, 1, 0);
-            rootTransform.translate(new Vector3f(0.005f,0.0f,0.0f));
-            rootTransform.rotate((float)Math.toRadians(0.4f),new Vector3f(0,1,0));
-			camera.move();
-//			renderer.prepare();
+
+//            rootTransform.translate(new Vector3f(0.005f,0.0f,0.0f));
+//            rootTransform.rotate((float)Math.toRadians(0.4f),new Vector3f(0,1,0));
+
+			figure.move();
+
+			Matrix4f rootTransform = new Matrix4f();
+			rootTransform = Maths.createTransformationMatrix(new Vector3f(figure.pos_x,figure.pos_y,figure.pos_z),
+				figure.rot_x, figure.rot_y, figure.rot_z, 1, 1,1);
+
+
+
+            camera.move();
+
+// 			renderer.prepare();
 //			shader.loadViewMatrix(camera);
 			if(!polating) {
                 detect_pose();

@@ -3,8 +3,10 @@ package animation;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import textures.ModelTexture;
 
@@ -15,6 +17,62 @@ public class Humanoid{
 //    public Entity rightarm;
 //    public Entity leftleg;
 //    public Entity rightleg;
+
+    public float RUN_SPEED = 10;
+    public float TURN_SPEED = 120;
+
+    public float currentSpeed = 0;
+    public float currentTurnSpeed = 0;
+
+    public float pos_x, pos_y, pos_z;
+    public float rot_x, rot_y, rot_z;
+
+    public void increasePosition(float x, float y, float z)
+    {
+        this.pos_x += x;
+        this.pos_y += y;
+        this.pos_z += z;
+    }
+
+
+    public void increaseRotation(float x, float y, float z)
+    {
+        this.rot_x += x;
+        this.rot_y += y;
+        this.rot_z += z;
+    }
+
+    public void move()
+    {
+        checkInputs();
+        increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
+        float distance = currentSpeed * DisplayManager.getFrameTime();
+        float dx = (float) (distance * Math.sin(Math.toRadians(rot_y)));
+        float dz = (float) (distance * Math.cos(Math.toRadians(rot_y)));
+        increasePosition( dx, 0 ,  dz);
+    }
+
+    public void checkInputs(){
+        if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+            this.currentSpeed = -RUN_SPEED;
+        }
+        else if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+            this.currentSpeed = RUN_SPEED;
+        }
+        else {
+            this.currentSpeed = 0;
+        }
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+            this.currentTurnSpeed = -TURN_SPEED;
+        }
+        else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+            this.currentTurnSpeed = TURN_SPEED;
+        }
+        else {
+            this.currentTurnSpeed = 0;
+        }
+    }
 
     public Entity bodyParts[] = new Entity[6];
 
@@ -100,6 +158,13 @@ public class Humanoid{
     public Matrix4f[] scales = new Matrix4f[6];
 
     public Humanoid(Loader loader){
+
+        pos_x = 0;
+        pos_y = 0;
+        pos_z = 0;
+        rot_x = 0;
+        rot_y = 0;
+        rot_z = 0;
 
         RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
 

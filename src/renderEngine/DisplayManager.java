@@ -54,7 +54,7 @@ import org.lwjgl.LWJGLException;
 
 public class DisplayManager {
 
-	private static final String TITLE = "ThinMatrix Animation Tutorial";
+	private static final String TITLE = "OpenGL-SkiGame";
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
 	private static final int FPS_CAP = 100;
