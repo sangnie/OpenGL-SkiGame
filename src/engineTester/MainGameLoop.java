@@ -118,7 +118,7 @@ public class MainGameLoop {
 //            rootTransform.translate(new Vector3f(0.005f,0.0f,0.0f));
 //            rootTransform.rotate((float)Math.toRadians(0.4f),new Vector3f(0,1,0));
 
-			figure.move();
+			figure.move(terrain);
 
 			Matrix4f rootTransform = new Matrix4f();
 			rootTransform = Maths.createTransformationMatrix(new Vector3f(figure.pos_x,figure.pos_y,figure.pos_z),

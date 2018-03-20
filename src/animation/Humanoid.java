@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import terrains.Terrain;
 import textures.ModelTexture;
 
 public class Humanoid{
@@ -18,11 +19,11 @@ public class Humanoid{
 //    public Entity leftleg;
 //    public Entity rightleg;
 
-    public float RUN_SPEED = 10;
+    public float RUN_SPEED = 50;
     public float TURN_SPEED = 120;
-    public float GRAVITY = -50;
+    public float GRAVITY = -30;
     public float JUMP_POWER = 30;
-    public float TERRAIN_HEIGHT = 5;        ////////////// ADD HEIGHT OF CENTRE OF THE MODEL.
+    public float BASE_HEIGHT = 5;        ////////////// ADD HEIGHT OF CENTRE OF THE MODEL.
 
     public float currentSpeed = 0;
     public float currentTurnSpeed = 0;
@@ -48,7 +49,7 @@ public class Humanoid{
         this.rot_z += z;
     }
 
-    public void move()
+    public void move(Terrain terrain)
     {
         checkInputs();
         increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
@@ -58,11 +59,12 @@ public class Humanoid{
         increasePosition( dx, 0 ,  dz);
         upSpeed += GRAVITY * DisplayManager.getFrameTime();
         increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
-        if(pos_y < TERRAIN_HEIGHT)
+        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
+        if(pos_y < terrainHeight)
         {
             upSpeed = 0;
             isInAir = false;
-            pos_y = TERRAIN_HEIGHT;
+            pos_y = terrainHeight;
         }
     }
 
