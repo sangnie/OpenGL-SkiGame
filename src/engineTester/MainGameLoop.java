@@ -66,6 +66,14 @@ public class MainGameLoop {
 		Entity rightarm = figure.bodyParts[3];
 		Entity leftleg = figure.bodyParts[4];
 		Entity rightleg = figure.bodyParts[5];
+		Entity lowerleftarm = figure.bodyParts[6];
+		Entity lowerrightarm = figure.bodyParts[7];
+		Entity lowerleftleg = figure.bodyParts[8];
+		Entity lowerrightleg = figure.bodyParts[9];
+		Entity leftpole = figure.bodyParts[10];
+		Entity rightpole = figure.bodyParts[11];
+		Entity leftski = figure.bodyParts[12];
+		Entity rightski = figure.bodyParts[13];
 
 
 		body.children.add(head.jointIndex);
@@ -73,6 +81,14 @@ public class MainGameLoop {
 		body.children.add(rightarm.jointIndex);
 		body.children.add(leftleg.jointIndex);
 		body.children.add(rightleg.jointIndex);
+		leftarm.children.add(lowerleftarm.jointIndex);
+		rightarm.children.add(lowerrightarm.jointIndex);
+		leftleg.children.add(lowerleftleg.jointIndex);
+		rightleg.children.add(lowerrightleg.jointIndex);
+		lowerleftarm.children.add(leftpole.jointIndex);
+		lowerrightarm.children.add(rightpole.jointIndex);
+		lowerleftleg.children.add(leftski.jointIndex);
+		lowerrightleg.children.add(rightski.jointIndex);
 
 		body.parentID = -1;
 		head.parentID = 0;
@@ -80,6 +96,14 @@ public class MainGameLoop {
 		rightarm.parentID = 0;
 		leftleg.parentID = 0;
 		rightleg.parentID = 0;
+		lowerleftarm.parentID = 2;
+		lowerrightarm.parentID = 3;
+		lowerleftleg.parentID = 4;
+		lowerrightleg.parentID = 5;
+		leftski.parentID = 6;
+		rightski.parentID = 7;
+		leftpole.parentID = 8;
+		rightpole.parentID = 9;
 
 		entities.add(body);
 		entities.add(head);
@@ -87,6 +111,14 @@ public class MainGameLoop {
 		entities.add(rightarm);
 		entities.add(leftleg);
 		entities.add(rightleg);
+		entities.add(lowerleftarm);
+		entities.add(lowerrightarm);
+		entities.add(lowerleftleg);
+		entities.add(lowerrightleg);
+		entities.add(leftski);
+		entities.add(rightski);
+		entities.add(leftpole);
+		entities.add(rightpole);
 
 		num_objects = entities.size();
 

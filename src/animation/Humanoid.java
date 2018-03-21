@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
 
@@ -98,7 +99,6 @@ public class Humanoid{
         }
     }
 
-    public Entity bodyParts[] = new Entity[6];
 
     public static float[] vertices = {
             -0.5f,0.5f,-0.5f,
@@ -179,7 +179,8 @@ public class Humanoid{
 
     };
 
-    public Matrix4f[] scales = new Matrix4f[6];
+    public Matrix4f[] scales = new Matrix4f[14];
+    public Entity bodyParts[] = new Entity[14];
 
     public Humanoid(Loader loader){
 
@@ -190,27 +191,46 @@ public class Humanoid{
         rot_y = 0;
         rot_z = 0;
 
-        RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
-
-        TexturedModel headModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("doraemon_face")));
-        TexturedModel bodyModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("body")));
-        TexturedModel armModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("hand")));
-        TexturedModel legModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("leg")));
+        RawModel cube_model = loader.loadToVAO(vertices,textureCoords,indices);
+//        RawModel sphere_model = OBJLoader.loadObjModel("sphere_tri",loader);
+        RawModel sphere_model = OBJLoader.loadObjModel("new_sphere",loader);
+        TexturedModel headModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("doraemon_face")));
+        TexturedModel bodyModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("body")));
+//        TexturedModel bodyModel = new TexturedModel(sphere_model, new ModelTexture(loader.loadTexture("dress")));
+        TexturedModel armModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("hand")));
+        TexturedModel legModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("leg")));
 
         //		Entity head = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
-        bodyParts[0] = new Entity(0, bodyModel, new Vector3f(0, 0f, 0), 0, 0, 0, 2, 4, 1);
+        bodyParts[0] = new Entity(0, bodyModel, new Vector3f(0, 0f, 0), 0, 0, 0, 1, 2, 1);
         bodyParts[1] = new Entity(1, headModel, new Vector3f(0, 2.5f, 0), 0, 0, 0, 1, 1, 1);
         bodyParts[2] = new Entity(2, armModel, new Vector3f(-1.25f, 0f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
         bodyParts[3] = new Entity(3, armModel, new Vector3f(1.25f, 0f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
         bodyParts[4] = new Entity(4, legModel, new Vector3f(-0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
         bodyParts[5] = new Entity(5, legModel, new Vector3f(0.5f, -3f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
+        bodyParts[6] = new Entity(6, armModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
+        bodyParts[7] = new Entity(7, armModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
+        bodyParts[8] = new Entity(8, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
+        bodyParts[9] = new Entity(9, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
+        bodyParts[10] = new Entity(10, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
+        bodyParts[11] = new Entity(11, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
+        bodyParts[12] = new Entity(12, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
+        bodyParts[13] = new Entity(13, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
 
-        scales[0] = Matrix4f.scale(new Vector3f(2,4,0.5f), new Matrix4f(), null);
+        scales[0] = Matrix4f.scale(new Vector3f(2,4,1f), new Matrix4f(), null);
+//        scales[0] = Matrix4f.scale(new Vector3f(1,2,1f), new Matrix4f(), null);
         scales[1] = Matrix4f.scale(new Vector3f(1,1,0.5f), new Matrix4f(), null);
         scales[2] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
         scales[3] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
         scales[4] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
         scales[5] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[6] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[7] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[8] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[9] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
+        scales[10] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
+        scales[11] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
+        scales[12] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
+        scales[13] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
     }
 }
 

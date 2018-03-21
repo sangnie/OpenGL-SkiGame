@@ -28,8 +28,8 @@ public class Entity {
 //	public static ArrayList<Matrix4f> scaleTransforms;
 //	public static Matrix4f[] finalRenderTransforms = new Matrix4f[6];
     public Matrix4f finalRenderTransform;
-	public static Matrix4f[] withoutScaleTransforms = new Matrix4f[6];
-	public static Matrix4f[] scaleTransforms = new Matrix4f[6];
+	public static Matrix4f[] withoutScaleTransforms = new Matrix4f[14];
+	public static Matrix4f[] scaleTransforms = new Matrix4f[14];
 	public static ArrayList<LocalTransform> translationsRotations;
 
 	public Entity(int jointIndex, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
