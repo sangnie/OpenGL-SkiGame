@@ -24,7 +24,8 @@ public class Humanoid{
     public float TURN_SPEED = 120;
     public float GRAVITY = -30;
     public float JUMP_POWER = 30;
-    public float BASE_HEIGHT = 5;        ////////////// ADD HEIGHT OF CENTRE OF THE MODEL.
+    public float BASE_HEIGHT = 6.2f;        ////////////// ADD HEIGHT OF CENTRE OF THE MODEL.
+    public float FRICTION = -10;
 
     public float currentSpeed = 0;
     public float currentTurnSpeed = 0;
@@ -53,6 +54,9 @@ public class Humanoid{
     public void move(Terrain terrain)
     {
         checkInputs();
+        currentSpeed += FRICTION * DisplayManager.getFrameTime();
+        if(currentSpeed < 0)
+            currentSpeed = 0;
         increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
         float distance = currentSpeed * DisplayManager.getFrameTime();
         float dx = (float) (distance * Math.sin(Math.toRadians(rot_y)));
@@ -69,16 +73,36 @@ public class Humanoid{
         }
     }
 
+
+//    public void move(Terrain terrain)
+//    {
+//        checkInputs();
+//        increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
+//        float distance = currentSpeed * DisplayManager.getFrameTime();
+//        float dx = (float) (distance * Math.sin(Math.toRadians(rot_y)));
+//        float dz = (float) (distance * Math.cos(Math.toRadians(rot_y)));
+//        increasePosition( dx, 0 ,  dz);
+//        upSpeed += GRAVITY * DisplayManager.getFrameTime();
+//        increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
+//        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
+//        if(pos_y < terrainHeight)
+//        {
+//            upSpeed = 0;
+//            isInAir = false;
+//            pos_y = terrainHeight;
+//        }
+//    }
+
     public void checkInputs(){
-        if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-            this.currentSpeed = -RUN_SPEED;
-        }
-        else if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-            this.currentSpeed = RUN_SPEED;
-        }
-        else {
-            this.currentSpeed = 0;
-        }
+//        if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+//            this.currentSpeed = -RUN_SPEED;
+//        }
+//        else if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+//            this.currentSpeed = RUN_SPEED;
+//        }
+//        else {
+//            this.currentSpeed = 0;
+//        }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
             this.currentTurnSpeed = -TURN_SPEED;

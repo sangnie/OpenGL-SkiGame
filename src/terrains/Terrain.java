@@ -25,6 +25,7 @@ public class Terrain {
     private ModelTexture texture;
 
     private float[][] heights;
+    private Vector3f[][] TerrainNormals;
 
     public Terrain(int gridX, int gridZ, Loader loader, ModelTexture texture, String heightMap){
         this.texture = texture;
@@ -67,6 +68,32 @@ public class Terrain {
         return  normal;
     }
 
+    public Vector3f getNormalOfTerrain(float worldX, float worldZ) {
+        float terrainX = worldX - this.x;
+        float terrainZ = worldZ - this.z;
+        float gridSquareSize = SIZE / ((float)heights.length - 1);
+        int gridX = (int) Math.floor(terrainX / gridSquareSize);
+        int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
+        if(gridX < 0 || gridZ < 0 || gridX >= heights.length - 1 || gridZ >= heights.length - 1) {
+            return new Vector3f(0f,1f,0f);
+        }
+//        float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
+//        float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
+//        float answer;
+//        if (xCoord <= (1-zCoord)) {
+//            answer = Maths
+//                    .baryCentric(new Vector3f(0, heights[gridX][gridZ], 0), new Vector3f(1,
+//                            heights[gridX + 1][gridZ], 0), new Vector3f(0,
+//                            heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+//        } else {
+//            answer = Maths
+//                    .baryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(1,
+//                            heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
+//                            heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
+//        }
+        return TerrainNormals[gridX][gridZ];
+    }
+
     public float getHeightOfTerrain(float worldX, float worldZ) {
         float terrainX = worldX - this.x;
         float terrainZ = worldZ - this.z;
@@ -106,6 +133,7 @@ public class Terrain {
 
         int VERTEX_COUNT = image.getHeight();
         heights = new float[VERTEX_COUNT][VERTEX_COUNT];
+        TerrainNormals = new Vector3f[VERTEX_COUNT][VERTEX_COUNT];
 
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];
@@ -121,6 +149,7 @@ public class Terrain {
                 vertices[vertexPointer*3+1] = height;
                 vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
                 Vector3f normal = calculateNormal(j,i,image);
+                TerrainNormals[j][i] = normal;
                 normals[vertexPointer*3] = normal.x;
                 normals[vertexPointer*3+1] = normal.y;
                 normals[vertexPointer*3+2] = normal.z;

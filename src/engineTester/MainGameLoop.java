@@ -139,7 +139,7 @@ public class MainGameLoop {
 		current_pose = 0;
 //		Matrix4f rootTransform = new Matrix4f();
 //		rootTransform.translate(new Vector3f(0,5,0));
-        int cycles = 100;
+        int CYCLES = 50;
 		int cyclesDone = 0;
         boolean polating = false;
 
@@ -150,36 +150,40 @@ public class MainGameLoop {
 //            rootTransform.translate(new Vector3f(0.005f,0.0f,0.0f));
 //            rootTransform.rotate((float)Math.toRadians(0.4f),new Vector3f(0,1,0));
 
+// 			renderer.prepare();
+//			shader.loadViewMatrix(camera);
+			if(!polating) {
+				detect_pose();
+				if(current_pose != previous_pose) {
+					if(previous_pose == 1)
+					{
+						figure.currentSpeed += 50;
+					}
+					polating = true;
+					cyclesDone = 0;
+				}
+				Entity.translationsRotations = keyframes.poses[previous_pose];
+			}
+            else {
+//                Entity.translationsRotations = interpolate(keyframes.poses[previous_pose],keyframes.poses[current_pose],1.0*cyclesDone/cycles);
+				Entity.translationsRotations = keyframes.interpolate(previous_pose,current_pose,1.0f*cyclesDone/CYCLES);
+				if(++cyclesDone == CYCLES){
+					previous_pose = current_pose;
+					polating = false;
+				}
+
+			}
+
 			figure.move(terrain);
 
 			Matrix4f rootTransform = new Matrix4f();
 			rootTransform = Maths.createTransformationMatrix(new Vector3f(figure.pos_x,figure.pos_y,figure.pos_z),
-				figure.rot_x, figure.rot_y, figure.rot_z, 1, 1,1);
+					figure.rot_x, figure.rot_y, figure.rot_z, 1, 1,1);
+
+			camera.move();
 
 
-
-            camera.move();
-
-// 			renderer.prepare();
-//			shader.loadViewMatrix(camera);
-			if(!polating) {
-                detect_pose();
-                if(current_pose != previous_pose) {
-                    polating = true;
-                    cyclesDone = 0;
-                }
-                Entity.translationsRotations = keyframes.poses[previous_pose];
-            }
-            else {
-//                Entity.translationsRotations = interpolate(keyframes.poses[previous_pose],keyframes.poses[current_pose],1.0*cyclesDone/cycles);
-                Entity.translationsRotations = keyframes.interpolate(previous_pose,current_pose,1.0f*cyclesDone/cycles);
-                if(++cyclesDone == 100){
-                    previous_pose = current_pose;
-                    polating = false;
-                }
-
-            }
-            // updated transform from pose
+			// updated transform from pose
 //			Entity.updateTransforms(keyframes.poses[current_pose],entities,0);
 
 			Entity.generateTransforms(rootTransform,0);
