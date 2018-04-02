@@ -145,8 +145,8 @@ public class Humanoid{
 //        Matrix4f.mul(matrix, rotQ.toRotationMatrix(), matrix);
 //        Matrix4f.scale(new Vector3f(scalex,scaley,scalez), matrix, matrix);
 
-        return Maths.createTransformationMatrix(new Vector3f(this.pos_x,this.pos_y,this.pos_z), this.rot_x, this.rot_y, this.rot_z, 1, 1,1);
-//        return matrix;
+//        return Maths.createTransformationMatrix(new Vector3f(this.pos_x,this.pos_y,this.pos_z), this.rot_x, this.rot_y, this.rot_z, 1, 1,1);
+        return matrix;
     }
 
 

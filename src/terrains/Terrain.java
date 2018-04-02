@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Terrain {
 
-    private static final float SIZE = 800;
+    private static final float SIZE = 2000;
 //    private static final int VERTEX_COUNT = 128;
     private static final int MAX_HEIGHT = 40;
     private static final int MAX_PIXEL_COLOUR = 256 * 256 * 256;
@@ -91,7 +91,22 @@ public class Terrain {
 //                            heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
 //                            heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
 //        }
-        return TerrainNormals[gridX][gridZ];
+//        return TerrainNormals[gridX][gridZ];
+        if(gridX < 1 || gridZ < 1 || gridX >= heights.length - 2 || gridZ >= heights.length - 2) {
+            return new Vector3f(0f,1f,0f);
+        }
+        Vector3f average_normal = new Vector3f();
+        Vector3f.add(TerrainNormals[gridX][gridZ],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX+1][gridZ],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX-1][gridZ],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX][gridZ+1],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX][gridZ-1],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX+1][gridZ+1],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX-1][gridZ-1],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX+1][gridZ-1],average_normal,average_normal);
+        Vector3f.add(TerrainNormals[gridX-1][gridZ+1],average_normal,average_normal);
+        average_normal.normalise(average_normal);
+        return average_normal;
     }
 
     public float getHeightOfTerrain(float worldX, float worldZ) {
@@ -183,7 +198,8 @@ public class Terrain {
         height += MAX_PIXEL_COLOUR/2f;
         height /= MAX_PIXEL_COLOUR/2f;
         height *= MAX_HEIGHT;
-        return height;
+//        return height;
+        return z/10;
     }
 
 }

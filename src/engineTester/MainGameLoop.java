@@ -129,7 +129,7 @@ public class MainGameLoop {
 
 		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
-		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"grad3");
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
 
 
