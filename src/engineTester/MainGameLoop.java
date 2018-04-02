@@ -128,7 +128,9 @@ public class MainGameLoop {
 //		}
 
 		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+//		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
 		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
+//		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
 
 
 		Entity.scaleTransforms = figure.scales;
@@ -174,12 +176,11 @@ public class MainGameLoop {
 
 			}
 
-			figure.move(terrain);
+//			figure.move(terrain);
 
 			Matrix4f rootTransform = new Matrix4f();
-			rootTransform = Maths.createTransformationMatrix(new Vector3f(figure.pos_x,figure.pos_y,figure.pos_z),
-					figure.rot_x, figure.rot_y, figure.rot_z, 1, 1,1);
-
+//			rootTransform = Maths.createTransformationMatrix(new Vector3f(figure.pos_x,figure.pos_y,figure.pos_z), figure.rot_x, figure.rot_y, figure.rot_z, 1, 1,1);
+			rootTransform = figure.move(terrain);
 			camera.move();
 
 

@@ -23,7 +23,6 @@ public class KeyFrames {
     public KeyFrames(Humanoid human) {
 //        human = new Humanoid(loader);
 
-
         poses[0] = new ArrayList<>(10);
         poses[1] = new ArrayList<>(10);
         poses[2] = new ArrayList<>(10);

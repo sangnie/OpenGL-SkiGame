@@ -4,6 +4,7 @@ import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
@@ -11,6 +12,7 @@ import renderEngine.Loader;
 import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
+import toolbox.Maths;
 
 public class Humanoid{
 //    public Entity head;
@@ -51,7 +53,29 @@ public class Humanoid{
         this.rot_z += z;
     }
 
-    public void move(Terrain terrain)
+//    public void move(Terrain terrain)
+//    {
+//        checkInputs();
+//        currentSpeed += FRICTION * DisplayManager.getFrameTime();
+//        if(currentSpeed < 0)
+//            currentSpeed = 0;
+//        increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
+//        float distance = currentSpeed * DisplayManager.getFrameTime();
+//        float dx = (float) (distance * Math.sin(Math.toRadians(rot_y)));
+//        float dz = (float) (distance * Math.cos(Math.toRadians(rot_y)));
+//        increasePosition( dx, 0 ,  dz);
+//        upSpeed += GRAVITY * DisplayManager.getFrameTime();
+//        increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
+//        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
+//        if(pos_y < terrainHeight)
+//        {
+//            upSpeed = 0;
+//            isInAir = false;
+//            pos_y = terrainHeight;
+//        }
+//    }
+
+    public Matrix4f move(Terrain terrain)
     {
         checkInputs();
         currentSpeed += FRICTION * DisplayManager.getFrameTime();
@@ -71,6 +95,58 @@ public class Humanoid{
             isInAir = false;
             pos_y = terrainHeight;
         }
+
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
+        Matrix4f.translate(new Vector3f(pos_x,pos_y,pos_z), matrix, matrix);
+//        Matrix4f.scale(new Vector3f(scalex,scaley,scalez), matrix, matrix);
+
+        Vector3f y = new Vector3f(0,1,0);
+        Vector3f normal = terrain.getNormalOfTerrain(pos_x,pos_z);
+        normal.normalise(normal);
+        Matrix4f.rotate((float) Math.toRadians(rot_x), new Vector3f(1,0,0), matrix, matrix);
+        Matrix4f.rotate((float) Math.toRadians(rot_y), new Vector3f(0,1,0), matrix, matrix);
+        Matrix4f.rotate((float) Math.toRadians(rot_z), new Vector3f(0,0,1), matrix, matrix);
+//        System.out.println(Math.toDegrees(angle));
+//        System.out.println("Normal: " + normal.toString());
+//        System.out.println("Axis:" + axis.toString());
+//        System.out.println("Axis length:" + axis.lengthSquared());
+//        System.out.println("Dot:" + Vector3f.dot(y, normal));
+        if(!y.equals(normal)) {
+            float angle = (float) Math.asin(Vector3f.dot(y, normal));
+            Vector3f axis = new Vector3f();
+            axis = Vector3f.cross(y, normal,axis);
+            axis.normalise(axis);
+//            Matrix4f.rotate((float) Math.toRadians(50), axis, matrix, matrix);
+            Matrix4f.rotate(-angle, axis, matrix, matrix);
+        }
+//        float sina2 = (float) Math.sin(angle/2);
+//        Quaternion rotQ = new Quaternion(axis.x*sina2, axis.y*sina2, axis.z*sina2, (float) Math.cos(angle/2));
+//        Matrix4f.mul(matrix, rotQ.toRotationMatrix(), matrix);
+
+//        Vector3f vec = new Vector3f();
+//        vec = Vector3f.cross(new Vector3f(0,1,0), terrain.getNormalOfTerrain(pos_x,pos_z),vec);
+//        vec.normalise(vec);
+//        Matrix3f vhat = new Matrix3f();
+//        vhat.m00 = 0;
+//        vhat.m01 = -vec.z;
+//        vhat.m02 = vec.y;
+//        vhat.m10 = vec.z;
+//        vhat.m11 = 0;
+//        vhat.m12 = -vec.x;
+//        vhat.m20 = -vec.y;
+//        vhat.m21 = vec.z;
+//        vhat.m22 = 0;
+//
+//        Matrix3f rot3 = new Matrix3f();
+//        Matrix3f.add(new Matrix3f(), vhat, rot3);
+//        Matrix3f.add(rot3, Matrix3f.mul(vhat,vhat,vhat), rot3); //DIVIDE VHAT2 BY (1+Cos)
+
+//        Matrix4f.mul(matrix, rotQ.toRotationMatrix(), matrix);
+//        Matrix4f.scale(new Vector3f(scalex,scaley,scalez), matrix, matrix);
+
+        return Maths.createTransformationMatrix(new Vector3f(this.pos_x,this.pos_y,this.pos_z), this.rot_x, this.rot_y, this.rot_z, 1, 1,1);
+//        return matrix;
     }
 
 

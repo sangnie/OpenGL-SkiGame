@@ -22,7 +22,7 @@ public class LocalTransform {
 //        this.rotation = Quaternion.fromMatrix(rotation);
         Matrix4f matrix = new Matrix4f();
         Matrix4f.rotate((float) Math.toRadians(rot), rotation, matrix, matrix);
-        System.out.println();
+//        System.out.println();
         this.rotation = Quaternion.fromMatrix(matrix);
     }
 }
