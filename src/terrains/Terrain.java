@@ -68,6 +68,19 @@ public class Terrain {
         return  normal;
     }
 
+    private Vector3f calculateNormal(int x, int z){
+        if(x < 1 || z < 1 || x >= heights.length - 2 || z >= heights.length - 2) {
+            return new Vector3f(0f,1f,0f);
+        }
+        float heightL = heights[z][x-1];
+        float heightR = heights[z][x+1];
+        float heightD = heights[z-1][x];
+        float heightU = heights[z+1][x];
+        Vector3f normal = new Vector3f(heightL-heightR,2f, heightD- heightU);
+        normal.normalise();
+        return  normal;
+    }
+
     public Vector3f getNormalOfTerrain(float worldX, float worldZ) {
         float terrainX = worldX - this.x;
         float terrainZ = worldZ - this.z;
@@ -95,7 +108,7 @@ public class Terrain {
         if(gridX < 1 || gridZ < 1 || gridX >= heights.length - 2 || gridZ >= heights.length - 2) {
             return new Vector3f(0f,1f,0f);
         }
-        Vector3f average_normal = new Vector3f();
+        Vector3f average_normal = new Vector3f(0f,0f,0f);
         Vector3f.add(TerrainNormals[gridX][gridZ],average_normal,average_normal);
         Vector3f.add(TerrainNormals[gridX+1][gridZ],average_normal,average_normal);
         Vector3f.add(TerrainNormals[gridX-1][gridZ],average_normal,average_normal);
@@ -150,6 +163,42 @@ public class Terrain {
         heights = new float[VERTEX_COUNT][VERTEX_COUNT];
         TerrainNormals = new Vector3f[VERTEX_COUNT][VERTEX_COUNT];
 
+        for(int i = 0 ; i < VERTEX_COUNT ; i++){
+            for(int j = 0 ; j < VERTEX_COUNT ; j++){
+                float height = getHeight(j,i,image);
+                heights[j][i] = height;
+            }
+        }
+//
+        float k = 0.9f;
+        int x,z;
+        /* Rows, left to right */
+        for(x = 1; x < VERTEX_COUNT; x++)
+            for (z = 0;z < VERTEX_COUNT; z++)
+                heights[z][x] = heights[z][x-1] * (1-k) +
+                heights[z][x-1] * k;
+
+        /* Rows, right to left*/
+        for(x = VERTEX_COUNT-2;x >= 0; x--)
+            for (z = 0;z < VERTEX_COUNT; z++)
+                heights[z][x] = heights[z][x+1] * (1-k) +
+                heights[z][x] * k;
+
+        /* Columns, bottom to top */
+        for(x = 0;x < VERTEX_COUNT; x++)
+            for (z = 1;z < VERTEX_COUNT; z++)
+                heights[z][x] = heights[z-1][x] * (1-k) +
+                heights[z][x] * k;
+
+        /* Columns, top to bottom */
+        for(x = 0;x < VERTEX_COUNT; x++)
+            for (z = VERTEX_COUNT-2; z >= 0; z--)
+                heights[z][x] = heights[z+1][x] * (1-k) +
+                heights[z][x] * k;
+
+
+
+
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];
         float[] normals = new float[count * 3];
@@ -159,12 +208,16 @@ public class Terrain {
         for(int i=0;i<VERTEX_COUNT;i++){
             for(int j=0;j<VERTEX_COUNT;j++){
                 vertices[vertexPointer*3] = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
-                float height = getHeight(j,i,image);
-                heights[j][i] = height;
-                vertices[vertexPointer*3+1] = height;
+//                float height = getHeight(j,i,image);
+//                heights[j][i] = height;
+                vertices[vertexPointer*3+1] = heights[j][i];
                 vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
                 Vector3f normal = calculateNormal(j,i,image);
+//                Vector3f normal = calculateNormal(j,i);
                 TerrainNormals[j][i] = normal;
+//                TerrainNormals[j][i] = calculateNormal(j,i);
+//                TerrainNormals[j][i] = calculateNormal(j,i,image);
+//                Vector3f normal = TerrainNormals[j][i];
                 normals[vertexPointer*3] = normal.x;
                 normals[vertexPointer*3+1] = normal.y;
                 normals[vertexPointer*3+2] = normal.z;
@@ -198,8 +251,8 @@ public class Terrain {
         height += MAX_PIXEL_COLOUR/2f;
         height /= MAX_PIXEL_COLOUR/2f;
         height *= MAX_HEIGHT;
-//        return height;
-        return z/10;
+        return height;
+//        return z/10;
     }
 
 }

@@ -88,7 +88,8 @@ public class Humanoid{
         increasePosition( dx, 0 ,  dz);
         upSpeed += GRAVITY * DisplayManager.getFrameTime();
         increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
-        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
+//        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
+        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z);
         if(pos_y < terrainHeight)
         {
             upSpeed = 0;
@@ -107,16 +108,16 @@ public class Humanoid{
         Matrix4f.rotate((float) Math.toRadians(rot_x), new Vector3f(1,0,0), matrix, matrix);
         Matrix4f.rotate((float) Math.toRadians(rot_y), new Vector3f(0,1,0), matrix, matrix);
         Matrix4f.rotate((float) Math.toRadians(rot_z), new Vector3f(0,0,1), matrix, matrix);
-//        System.out.println(Math.toDegrees(angle));
-//        System.out.println("Normal: " + normal.toString());
 //        System.out.println("Axis:" + axis.toString());
 //        System.out.println("Axis length:" + axis.lengthSquared());
 //        System.out.println("Dot:" + Vector3f.dot(y, normal));
         if(!y.equals(normal)) {
-            float angle = (float) Math.asin(Vector3f.dot(y, normal));
+            float angle = (float) Math.acos(Vector3f.dot(y, normal));
             Vector3f axis = new Vector3f();
-            axis = Vector3f.cross(y, normal,axis);
+            Vector3f.cross(y, normal,axis);
             axis.normalise(axis);
+//            System.out.println(Math.toDegrees(angle));
+//            System.out.println("Normal: " + normal.toString());
 //            Matrix4f.rotate((float) Math.toRadians(50), axis, matrix, matrix);
             Matrix4f.rotate(-angle, axis, matrix, matrix);
         }
@@ -146,6 +147,7 @@ public class Humanoid{
 //        Matrix4f.scale(new Vector3f(scalex,scaley,scalez), matrix, matrix);
 
 //        return Maths.createTransformationMatrix(new Vector3f(this.pos_x,this.pos_y,this.pos_z), this.rot_x, this.rot_y, this.rot_z, 1, 1,1);
+        Matrix4f.translate(new Vector3f(0,BASE_HEIGHT,0), matrix, matrix);
         return matrix;
     }
 
