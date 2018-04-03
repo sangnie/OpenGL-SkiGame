@@ -100,7 +100,7 @@ public class MainGameLoop {
 
 		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
-		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap2");
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
 
 
@@ -132,6 +132,27 @@ public class MainGameLoop {
 					{
 						figure.currentSpeed += 50;
 					}
+                    switch (current_pose){
+						case 0:
+							figure.currentTurnSpeed = 0;
+							break;
+						case 1:
+//                            figure.currentSpeed += 50;
+							figure.currentTurnSpeed = 0;
+							break;
+						case 2:
+							figure.currentTurnSpeed = 0;
+							break;
+						case 3:
+							figure.currentTurnSpeed = 0;
+							break;
+						case 4:
+                        	figure.currentTurnSpeed = figure.TURN_SPEED;
+                            break;
+						case 5:
+							figure.currentTurnSpeed = -figure.TURN_SPEED;
+							break;
+                    }
 					polating = true;
 					cyclesDone = 0;
 				}

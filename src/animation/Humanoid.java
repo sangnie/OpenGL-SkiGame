@@ -23,7 +23,8 @@ public class Humanoid{
 //    public Entity rightleg;
 
     public float RUN_SPEED = 50;
-    public float TURN_SPEED = 120;
+//    public float TURN_SPEED = 120;
+    public float TURN_SPEED = 60;
     public float GRAVITY = -30;
     public float JUMP_POWER = 30;
     public float BASE_HEIGHT = 6.2f;        ////////////// ADD HEIGHT OF CENTRE OF THE MODEL.
@@ -78,7 +79,7 @@ public class Humanoid{
     public Matrix4f move(Terrain terrain)
     {
         checkInputs();
-        currentSpeed += FRICTION * DisplayManager.getFrameTime();
+//        currentSpeed += FRICTION * DisplayManager.getFrameTime();
         if(currentSpeed < 0)
             currentSpeed = 0;
         increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTime(), 0);
@@ -88,6 +89,7 @@ public class Humanoid{
         increasePosition( dx, 0 ,  dz);
         upSpeed += GRAVITY * DisplayManager.getFrameTime();
         increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
+
 
 //        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
         float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z);
@@ -122,6 +124,8 @@ public class Humanoid{
 //            System.out.println("Normal: " + normal.toString());
 //            Matrix4f.rotate((float) Math.toRadians(50), axis, matrix, matrix);
             Matrix4f.rotate(-angle, axis, matrix, matrix);
+
+            currentSpeed += 0.1 * ((Vector3f.dot(new Vector3f(dx,0,dz), normal) >= 0) ? 1 : -1);
         }
 //        float sina2 = (float) Math.sin(angle/2);
 //        Quaternion rotQ = new Quaternion(axis.x*sina2, axis.y*sina2, axis.z*sina2, (float) Math.cos(angle/2));
@@ -184,16 +188,16 @@ public class Humanoid{
 //        else {
 //            this.currentSpeed = 0;
 //        }
-
-        if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-            this.currentTurnSpeed = -TURN_SPEED;
-        }
-        else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-            this.currentTurnSpeed = TURN_SPEED;
-        }
-        else {
-            this.currentTurnSpeed = 0;
-        }
+//
+//        if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+//            this.currentTurnSpeed = -TURN_SPEED;
+//        }
+//        else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+//            this.currentTurnSpeed = TURN_SPEED;
+//        }
+//        else {
+//            this.currentTurnSpeed = 0;
+//        }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             if(! isInAir)
