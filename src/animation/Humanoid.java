@@ -14,6 +14,9 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import toolbox.Maths;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Humanoid{
 //    public Entity head;
 //    public Entity body;
@@ -286,8 +289,9 @@ public class Humanoid{
 
     public Matrix4f[] scales = new Matrix4f[14];
     public Entity bodyParts[] = new Entity[14];
+    public ArrayList<Entity> flags = new ArrayList<Entity>();
 
-    public Humanoid(Loader loader){
+    public Humanoid(Loader loader, Terrain terrain){
 
         pos_x = 0;
         pos_y = 5;
@@ -305,6 +309,8 @@ public class Humanoid{
         TexturedModel armModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("hand")));
         TexturedModel legModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("leg")));
         TexturedModel skiModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("orange")));
+        TexturedModel flagModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("orange")));
+
 
         //		Entity head = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
         bodyParts[0] = new Entity(0, bodyModel, new Vector3f(0, 0f, 0), 0, 0, 0, 1, 2, 1);
@@ -383,6 +389,20 @@ public class Humanoid{
         rightski.parentID = 9;
         leftpole.parentID = 6;
         rightpole.parentID = 7;
+
+        Random random = new Random(676452);
+        for(int i = 0 ; i < 20 ; i++)
+        {
+            float x = random.nextInt(2000);
+            float z = -random.nextInt(2000);
+            float y = terrain.getHeightOfTerrain(x,z);
+            flags.add(new Entity(i,flagModel,new Vector3f(x,y,z),0f,0f,0f,2f,30f,2f));
+        }
+
+
+
+
+
     }
 }
 
