@@ -88,7 +88,8 @@ public class Humanoid{
         increasePosition( dx, 0 ,  dz);
         upSpeed += GRAVITY * DisplayManager.getFrameTime();
         increasePosition(0,upSpeed * DisplayManager.getFrameTime(), 0);
-        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
+        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z);
+//        float terrainHeight = terrain.getHeightOfTerrain(pos_x,pos_z) + BASE_HEIGHT;
         if(pos_y < terrainHeight)
         {
             upSpeed = 0;
@@ -146,6 +147,7 @@ public class Humanoid{
 //        Matrix4f.scale(new Vector3f(scalex,scaley,scalez), matrix, matrix);
 
 //        return Maths.createTransformationMatrix(new Vector3f(this.pos_x,this.pos_y,this.pos_z), this.rot_x, this.rot_y, this.rot_z, 1, 1,1);
+        Matrix4f.translate(new Vector3f(0, BASE_HEIGHT,0),matrix,matrix);
         return matrix;
     }
 
@@ -299,6 +301,7 @@ public class Humanoid{
 //        TexturedModel bodyModel = new TexturedModel(sphere_model, new ModelTexture(loader.loadTexture("dress")));
         TexturedModel armModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("hand")));
         TexturedModel legModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("leg")));
+        TexturedModel skiModel = new TexturedModel(cube_model, new ModelTexture(loader.loadTexture("orange")));
 
         //		Entity head = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
         bodyParts[0] = new Entity(0, bodyModel, new Vector3f(0, 0f, 0), 0, 0, 0, 1, 2, 1);
@@ -313,8 +316,8 @@ public class Humanoid{
         bodyParts[9] = new Entity(9, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.5f, 2, 0.5f);
         bodyParts[10] = new Entity(10, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
         bodyParts[11] = new Entity(11, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
-        bodyParts[12] = new Entity(12, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
-        bodyParts[13] = new Entity(13, legModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
+        bodyParts[12] = new Entity(12, skiModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
+        bodyParts[13] = new Entity(13, skiModel, new Vector3f(0f, -2f, 0), 0, 0, 0, 0.05f, 6, 0.05f);
 
         scales[0] = Matrix4f.scale(new Vector3f(2,4,1f), new Matrix4f(), null);
 //        scales[0] = Matrix4f.scale(new Vector3f(1,2,1f), new Matrix4f(), null);
@@ -327,10 +330,56 @@ public class Humanoid{
         scales[7] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
         scales[8] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
         scales[9] = Matrix4f.scale(new Vector3f(0.5f,2,0.5f), new Matrix4f(), null);
-        scales[10] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
-        scales[11] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
-        scales[12] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
-        scales[13] = Matrix4f.scale(new Vector3f(0.05f,6,0.05f), new Matrix4f(), null);
+        scales[10] = Matrix4f.scale(new Vector3f(0.05f,0.05f,6f), new Matrix4f(), null);
+        scales[11] = Matrix4f.scale(new Vector3f(0.05f,0.05f,6f), new Matrix4f(), null);
+        scales[12] = Matrix4f.scale(new Vector3f(0.5f,0.05f,6), new Matrix4f(), null);
+        scales[13] = Matrix4f.scale(new Vector3f(0.5f,0.05f,6), new Matrix4f(), null);
+
+        Entity body = bodyParts[0];
+        Entity head = bodyParts[1];
+        Entity leftarm = bodyParts[2];
+        Entity rightarm = bodyParts[3];
+        Entity leftleg = bodyParts[4];
+        Entity rightleg = bodyParts[5];
+        Entity lowerleftarm = bodyParts[6];
+        Entity lowerrightarm = bodyParts[7];
+        Entity lowerleftleg = bodyParts[8];
+        Entity lowerrightleg = bodyParts[9];
+        Entity leftpole = bodyParts[10];
+        Entity rightpole = bodyParts[11];
+        Entity leftski = bodyParts[12];
+        Entity rightski = bodyParts[13];
+
+        body.children.add(head.jointIndex);
+        body.children.add(leftarm.jointIndex);
+        body.children.add(rightarm.jointIndex);
+        body.children.add(leftleg.jointIndex);
+        body.children.add(rightleg.jointIndex);
+        leftarm.children.add(lowerleftarm.jointIndex);
+        rightarm.children.add(lowerrightarm.jointIndex);
+        leftleg.children.add(lowerleftleg.jointIndex);
+        rightleg.children.add(lowerrightleg.jointIndex);
+//		lowerleftleg.children.add(leftleg.jointIndex);
+//		lowerrightleg.children.add(rightleg.jointIndex);
+        lowerleftarm.children.add(leftpole.jointIndex);
+        lowerrightarm.children.add(rightpole.jointIndex);
+        lowerleftleg.children.add(leftski.jointIndex);
+        lowerrightleg.children.add(rightski.jointIndex);
+
+        body.parentID = -1;
+        head.parentID = 0;
+        leftarm.parentID = 0;
+        rightarm.parentID = 0;
+        leftleg.parentID = 0;
+        rightleg.parentID = 0;
+        lowerleftarm.parentID = 2;
+        lowerrightarm.parentID = 3;
+        lowerleftleg.parentID = 4;
+        lowerrightleg.parentID = 5;
+        leftski.parentID = 8;
+        rightski.parentID = 9;
+        leftpole.parentID = 6;
+        rightpole.parentID = 7;
     }
 }
 

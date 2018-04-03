@@ -76,35 +76,6 @@ public class MainGameLoop {
 		Entity rightski = figure.bodyParts[13];
 
 
-		body.children.add(head.jointIndex);
-		body.children.add(leftarm.jointIndex);
-		body.children.add(rightarm.jointIndex);
-		body.children.add(leftleg.jointIndex);
-		body.children.add(rightleg.jointIndex);
-		leftarm.children.add(lowerleftarm.jointIndex);
-		rightarm.children.add(lowerrightarm.jointIndex);
-		leftleg.children.add(lowerleftleg.jointIndex);
-		rightleg.children.add(lowerrightleg.jointIndex);
-		lowerleftarm.children.add(leftpole.jointIndex);
-		lowerrightarm.children.add(rightpole.jointIndex);
-		lowerleftleg.children.add(leftski.jointIndex);
-		lowerrightleg.children.add(rightski.jointIndex);
-
-		body.parentID = -1;
-		head.parentID = 0;
-		leftarm.parentID = 0;
-		rightarm.parentID = 0;
-		leftleg.parentID = 0;
-		rightleg.parentID = 0;
-		lowerleftarm.parentID = 2;
-		lowerrightarm.parentID = 3;
-		lowerleftleg.parentID = 4;
-		lowerrightleg.parentID = 5;
-		leftski.parentID = 6;
-		rightski.parentID = 7;
-		leftpole.parentID = 8;
-		rightpole.parentID = 9;
-
 		entities.add(body);
 		entities.add(head);
 		entities.add(leftarm);
@@ -115,10 +86,10 @@ public class MainGameLoop {
 		entities.add(lowerrightarm);
 		entities.add(lowerleftleg);
 		entities.add(lowerrightleg);
-		entities.add(leftski);
-		entities.add(rightski);
 		entities.add(leftpole);
 		entities.add(rightpole);
+		entities.add(leftski);
+		entities.add(rightski);
 
 		num_objects = entities.size();
 
@@ -129,7 +100,7 @@ public class MainGameLoop {
 
 		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
-		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"grad3");
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
 
 
@@ -229,6 +200,12 @@ public class MainGameLoop {
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_3)){
 			current_pose = 3;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_4)){
+			current_pose = 4;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_5)){
+			current_pose = 5;
 		}
 	}
 
