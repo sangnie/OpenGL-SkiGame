@@ -41,7 +41,7 @@ public class MainGameLoop {
 
 		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
-		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap2");
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
 
 //		RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
@@ -110,10 +110,6 @@ public class MainGameLoop {
 
 		Entity.scaleTransforms = figure.scales;
 
-
-
-
-
 		Camera camera = new Camera(figure);
 
 		int previous_pose = 0;
@@ -135,23 +131,30 @@ public class MainGameLoop {
 //			shader.loadViewMatrix(camera);
 			if(!polating) {
 				detect_pose();
+
+				if(previous_pose == 6)
+				{
+					figure.currentSpeed -= 1;
+				}
+
 				if(current_pose != previous_pose) {
 					if(previous_pose == 1)
 					{
 						figure.currentSpeed += 50;
 					}
-                    switch (current_pose){
+					switch (current_pose){
 						case 0:
 							figure.currentTurnSpeed = 0;
 							break;
 						case 1:
-//                            figure.currentSpeed += 50;
 							figure.currentTurnSpeed = 0;
 							break;
 						case 2:
+                            figure.currentSpeed += 15;
 							figure.currentTurnSpeed = 0;
 							break;
 						case 3:
+							figure.currentSpeed -= 15;
 							figure.currentTurnSpeed = 0;
 							break;
 						case 4:
@@ -239,6 +242,9 @@ public class MainGameLoop {
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_5)){
 			current_pose = 5;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_6)){
+			current_pose = 6;
 		}
 	}
 

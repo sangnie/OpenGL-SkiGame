@@ -82,7 +82,6 @@ public class KeyFrames {
 //        poses[1].add(matrix);
 
         for(int i=0; i<14; i++){
-//            poses[2].add(human.bodyParts[i].bindTransform);
             poses[2].add(i,orig[i]);
         }
 //        matrix = new Matrix4f();
@@ -113,7 +112,6 @@ public class KeyFrames {
         poses[2].set(13,new LocalTransform(new Vector3f(0f,-1f,0f),-45,new Vector3f(1,0,0)));
 
         for(int i=0; i<14; i++){
-//            poses[2].add(human.bodyParts[i].bindTransform);
             poses[3].add(i,orig[i]);
         }
 
@@ -128,7 +126,6 @@ public class KeyFrames {
         poses[3].set(13,new LocalTransform(new Vector3f(0f,-1f,0f),-45,new Vector3f(1,0,0)));
 
         for(int i=0; i<14; i++){
-//            poses[2].add(human.bodyParts[i].bindTransform);
             poses[4].add(i,orig[i]);
         }
 
@@ -144,7 +141,6 @@ public class KeyFrames {
         poses[4].set(10,new LocalTransform(new Vector3f(-2.121f, -1f, -2.121f),45, new Vector3f(0, 1f, 0)));
 
         for(int i=0; i<14; i++){
-//            poses[2].add(human.bodyParts[i].bindTransform);
             poses[5].add(i,orig[i]);
         }
 
@@ -160,6 +156,16 @@ public class KeyFrames {
         poses[5].set(11,new LocalTransform(new Vector3f(-2.121f, -1f, -2.121f),45, new Vector3f(0, 1f, 0)));
 //        poses[4].set(12,new LocalTransform(new Vector3f(0f,-1f,0f),-45,new Vector3f(1,0,0)));
 //        poses[4].set(13,new LocalTransform(new Vector3f(0f,-1f,0f),-45,new Vector3f(1,0,0)));
+
+        for(int i=0; i<14; i++){
+            poses[6].add(i,orig[i]);
+        }
+        poses[6].set(4,new LocalTransform(new Vector3f(-1.5f,-2.5f,0),-30,new Vector3f(0,0,1)));
+        poses[6].set(5,new LocalTransform(new Vector3f(1.5f,-2.5f,0),30,new Vector3f(0,0,1)));
+        poses[6].set(6,new LocalTransform(new Vector3f(0f,-1.707f,0.707f),-45,new Vector3f(1,0,0)));
+        poses[6].set(7,new LocalTransform(new Vector3f(0f,-1.707f,0.707f),-45,new Vector3f(1,0,0)));
+        poses[6].set(12,new LocalTransform(new Vector3f(0f,-1f,0f),45,new Vector3f(0,1,0)));
+        poses[6].set(13,new LocalTransform(new Vector3f(0f,-1f,0f),-45,new Vector3f(0,1,0)));
     }
 
     public ArrayList<LocalTransform> interpolate(int prev, int next, float t){
