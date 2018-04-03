@@ -39,6 +39,11 @@ public class MainGameLoop {
 //		Renderer renderer = new Renderer(shader);
 		MasterRenderer renderer = new MasterRenderer();
 
+		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+//		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap2");
+//		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
+
 //		RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
 //
 //		TexturedModel headModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("doraemon_face")));
@@ -56,7 +61,7 @@ public class MainGameLoop {
 //		Entity leftleg = new Entity(4,legModel, new Vector3f(-0.5f,-5.5f,0),0,0,0,0.5f,2,1);
 //		Entity rightleg = new Entity(5,legModel, new Vector3f(0.5f,-5.5f,0),0,0,0,0.5f,2,1);
 
-		Humanoid figure = new Humanoid(loader);
+		Humanoid figure = new Humanoid(loader,terrain);
 		KeyFrames keyframes = new KeyFrames(figure);
 
 //		int num_objects = 6;
@@ -98,13 +103,16 @@ public class MainGameLoop {
 //			Entity.withoutScaleTransform.add(new Matrix4f());
 //		}
 
-		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+//		Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"plain");
-		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
+//		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"heightmap1");
 //		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("snow1")),"terrain");
 
-
 		Entity.scaleTransforms = figure.scales;
+
+
+
+
 
 		Camera camera = new Camera(figure);
 
@@ -186,6 +194,10 @@ public class MainGameLoop {
 			for(Entity ent:entities) {
 //				renderer.render(ent,shader);
 				renderer.processEntity(ent);
+			}
+
+			for(Entity flag:figure.flags) {
+				renderer.processEntity(flag);
 			}
 
 			renderer.processTerrain(terrain);

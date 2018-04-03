@@ -46,6 +46,9 @@ public class Entity {
 		this.jointIndex = jointIndex;
 		this.bindTransform = Maths.createTransformationMatrix(position,
 				rotX, rotY, rotZ,scaleX, scaleY,scaleZ);
+
+		this.finalRenderTransform = Maths.createTransformationMatrix(position,
+				rotX, rotY, rotZ,scaleX, scaleY,scaleZ);
 //		this.scale = scale;
 	}
 
