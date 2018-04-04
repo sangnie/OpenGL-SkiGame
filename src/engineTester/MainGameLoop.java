@@ -111,6 +111,7 @@ public class MainGameLoop {
 		Entity.scaleTransforms = figure.scales;
 
 		Camera camera = new Camera(figure);
+//		Camera camera = new Camera();
 
 		int previous_pose = 0;
 		current_pose = 0;
@@ -186,6 +187,8 @@ public class MainGameLoop {
 //			rootTransform = Maths.createTransformationMatrix(new Vector3f(figure.pos_x,figure.pos_y,figure.pos_z), figure.rot_x, figure.rot_y, figure.rot_z, 1, 1,1);
 			rootTransform = figure.move(terrain);
 			camera.move();
+
+//			camera.move2();
 
 
 			// updated transform from pose

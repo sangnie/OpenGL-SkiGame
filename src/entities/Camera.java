@@ -22,6 +22,7 @@ public class Camera {
         this.player = player;
     }
 
+    public Camera() {}
 
     public void move() {
         calculateZoom();
@@ -33,18 +34,26 @@ public class Camera {
         this.yaw = 180 - (player.rot_y + angleAroundPlayer);
     }
 
-//		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-//			position.z-=0.02f;
-//		}
-//		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-//			position.z+=0.02f;
-//		}
-//		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-//			position.x+=0.02f;
-//		}
-//		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-//			position.x-=0.02f;
-//		}
+    public void move2() {
+		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+			position.z-=0.2f;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+			position.z+=0.2f;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+			position.x+=0.2f;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+			position.x-=0.2f;
+		}
+        if(Keyboard.isKeyDown(Keyboard.KEY_L)){
+            position.y+=0.2f;
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_M)){
+            position.y-=0.2f;
+        }
+    }
 
 	public Vector3f getPosition() {
 		return position;
