@@ -135,6 +135,7 @@ public class MainGameLoop {
 				if(previous_pose == 6)
 				{
 					figure.currentSpeed -= 1;
+					figure.currentTurnSpeed = 0;
 				}
 
 				if(current_pose != previous_pose) {
@@ -197,6 +198,20 @@ public class MainGameLoop {
 			for(Entity ent:entities) {
 //				renderer.render(ent,shader);
 				renderer.processEntity(ent);
+			}
+
+
+			// Check collision
+			for(int i = 0 ; i < 20 ; i++)
+			{
+				float x = figure.flags.get(i).getPosition().x;
+				float z = figure.flags.get(i).getPosition().z;
+				float dist = (x - figure.pos_x)*(x - figure.pos_x) + (z - figure.pos_z)*(z - figure.pos_z);
+				if(dist < 20)
+				{
+					Entity temp = figure.flags.get(i);
+					figure.flags.set(i,new Entity(i,temp.getModel(),new Vector3f(x,temp.getPosition().y,z),90f,90f-figure.rot_y,0f,2f,30f,2f));
+				}
 			}
 
 			for(Entity flag:figure.flags) {
